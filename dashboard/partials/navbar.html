@@ -1,0 +1,13 @@
+<button *ngIf="hasRole('Admin|Supervisor|Manager|Support')" mat-button routerLink="/dashboard/home" routerLinkActive="mat-raised-button" (click)="closeNav()">Dashboard</button>
+<button *ngIf="hasRole('Admin|Supervisor')" mat-button routerLink="/dashboard/categories" routerLinkActive="mat-raised-button" (click)="closeNav()">Categories</button>
+<button *ngIf="hasRole('Admin|Supervisor')" mat-button routerLink="/dashboard/services" routerLinkActive="mat-raised-button" (click)="closeNav()">Country</button>
+<button *ngIf="hasRole('Admin')" mat-button routerLink="/dashboard/sources" routerLinkActive="mat-raised-button" (click)="closeNav()">Social Media</button>
+<button *ngIf="hasRole('Admin|Supervisor')" mat-button routerLink="/dashboard/products" routerLinkActive="mat-raised-button" (click)="closeNav()">Products</button>
+<button *ngIf="hasRole('Admin|Supervisor|Manager|Support')" mat-button routerLink="/dashboard/tickets" routerLinkActive="mat-raised-button" (click)="closeNav()">Tickets</button>
+<button *ngIf="hasRole('Admin|Supervisor|Manager')" mat-button routerLink="/dashboard/orders" routerLinkActive="mat-raised-button" (click)="closeNav()">Orders</button>
+<button *ngIf="hasRole('Admin|Supervisor')" mat-button routerLink="/dashboard/users" routerLinkActive="mat-raised-button" (click)="closeNav()">Users</button>
+<button *ngIf="hasRole('Admin|Supervisor|Manager|Support')" mat-button routerLink="/dashboard/transaction" routerLinkActive="mat-raised-button" (click)="closeNav()">Transactions</button>
+<button *ngIf="hasRole('Admin|Supervisor')" mat-button routerLink="/dashboard/discounts" routerLinkActive="mat-raised-button" (click)="closeNav()">Discounts</button>
+<button *ngIf="hasRole('Admin|Supervisor|Manager|Support')" mat-button routerLink="/dashboard/blog" routerLinkActive="mat-raised-button" (click)="closeNav()">Blog</button>
+<button *ngIf="hasRole('Admin|Supervisor|Manager|Support')" mat-button routerLink="/dashboard/newsletter" routerLinkActive="mat-raised-button" (click)="closeNav()">NewsLetters</button>
+

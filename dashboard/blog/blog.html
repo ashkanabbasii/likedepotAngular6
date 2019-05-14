@@ -1,0 +1,80 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="">
+    <div class="page-head">
+        <span class="page-title">Blog</span>
+        <button mat-flat-button color="primary" (click)="editProduct('')">New News</button>
+    </div>
+    <div class="user-search">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Search" [(ngModel)]="search" (keypress)="reload()">
+        </mat-form-field>
+    </div>
+
+    <div class="table-container">
+        <table class="tables" mat-table #table [dataSource]="news.items" matSort (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="title">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="blog_body">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>News Body</th>
+                <td mat-cell *matCellDef="let element"> {{element.blog_body.substr(0,30)+'...'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                    <button  color="primary"  class="table-button small-material-button" mat-raised-button (click)="editProduct(element)">
+                        Edit
+                    </button>
+
+                    <button color="warn" class="table-button small-material-button" mat-raised-button  (click)="deleteItem(element.id)">
+                        Delete
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="news.total"
+                       [pageSize]="pager"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+
+</div>

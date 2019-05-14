@@ -1,0 +1,97 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="">
+    <div class="page-head">
+        <span class="page-title">Services</span>
+        <button mat-flat-button color="primary" (click)="editProduct('')">New Product</button>
+    </div>
+    <div class="user-search">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Search" [(ngModel)]="search" (keypress)="reload()">
+        </mat-form-field>
+    </div>
+
+    <div class="table-container">
+        <table class="tables" mat-table #table [dataSource]="products.items" matSort (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="source_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Source</th>
+                <td mat-cell *matCellDef="let element"> {{element.source_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cat_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+                <td mat-cell *matCellDef="let element"> {{element.category_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="service_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Service</th>
+                <td mat-cell *matCellDef="let element"> {{element.service_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</th>
+                <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let element"> {{element.price}}$ </td>
+            </ng-container>
+            <ng-container matColumnDef="gender">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+                <td mat-cell *matCellDef="let element"> {{element.gender}}</td>
+            </ng-container>
+            <ng-container matColumnDef="gender_percent">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Gender_Tax</th>
+                <td mat-cell *matCellDef="let element"> {{element.gender_percent}} </td>
+            </ng-container>
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                    <button  color="primary"  class="table-button small-material-button" mat-raised-button (click)="editProduct(element)">
+                        Edit
+                    </button>
+
+                    <button color="warn" class="table-button small-material-button" mat-raised-button  (click)="deleteItem(element.id)">
+                        Delete
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="products.total"
+                       [pageSize]="pager"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+
+</div>

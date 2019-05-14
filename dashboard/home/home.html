@@ -1,0 +1,254 @@
+
+<div class="flex-container">
+
+
+    <div class="flex-item">
+        <div class="table-title">
+            Pending Tickets
+        </div>
+        <div class="table-container">
+            <table class="tables" mat-table #table [dataSource]="ticket.items" matSort (matSortChange)="sortData($event,'ticket')">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle('ticket') : null"
+                                      [checked]="selectionTicket.hasValue() && isAllSelected('ticket')"
+                                      [indeterminate]="selectionTicket.hasValue() && !isAllSelected('ticket')">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      (change)="$event ? selectionTicket.toggle(row) : null"
+                                      [checked]="selectionTicket.isSelected(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="user_id">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                    <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="subject">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>subject</th>
+                    <td mat-cell *matCellDef="let element"> {{element.subject.substr(0 , 50) }} {{ element.message.length > 50 ? '...' : '' }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                    <td mat-cell *matCellDef="let element" [ngSwitch]="element.status">
+                        <span *ngSwitchCase="0">Pending</span>
+                        <span *ngSwitchCase="1">Closed</span>
+                        <span *ngSwitchCase="2">In Progress</span>
+                    </td>
+                </ng-container>
+
+
+
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a  color="primary"  class="table-button small-material-button" mat-raised-button [routerLink]="['/dashboard/tickets', element.id ]">
+                            Show
+                        </a>
+
+
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsTicket"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsTicket;"></tr>
+            </table>
+            <mat-paginator [length]="ticket.total"
+                           [pageSize]="pagerTicket"
+                           [pageIndex]="pageTicket"
+                           [pageSizeOptions]="[10, 25, 100]"
+                           [showFirstLastButtons]="true"
+                           (page)="changePage($event,'ticket')">
+            </mat-paginator>
+        </div>
+    </div>
+
+    <div class="flex-item">
+
+        <div class="table-title">
+            Pending Orders
+        </div>
+
+        <div class="table-container">
+            <table class="tables" mat-table #table [dataSource]="order.items" matSort (matSortChange)="sortData($event,'order')">
+
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle('order') : null"
+                                      [checked]="selectionOrder.hasValue() && isAllSelected('order')"
+                                      [indeterminate]="selectionOrder.hasValue() && !isAllSelected('order')">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      (change)="$event ? selectionOrder.toggle(row) : null"
+                                      [checked]="selectionOrder.isSelected(row)">
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="user_id">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                    <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="ref_id">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference_number</th>
+                    <td mat-cell *matCellDef="let element"> {{element.ref_id == '1' ? 'Payed From The Wallet' : element.ref_id}} </td>
+                </ng-container>
+
+
+                <ng-container matColumnDef="price">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.price |number :'1.2-2'}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                    <td mat-cell *matCellDef="let element" [ngSwitch]="element.status">
+                        <span *ngSwitchCase="0">Pending</span>
+                        <span *ngSwitchCase="1">Done</span>
+                        <span *ngSwitchCase="2">In Progress</span>
+                        <span *ngSwitchCase="3">Canceled</span>
+
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="link">
+                    <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+                    <td mat-cell *matCellDef="let element"> {{element.link}} </td>
+                </ng-container>
+
+
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let element">
+                        <form>
+
+                            <mat-form-field *ngIf="element.status !=3">
+                                <mat-select placeholder="Status" [(ngModel)]="element.status" name="status" (selectionChange)="ChangeStatus(element)">
+                                    <mat-option value="0">
+                                        Pending
+                                    </mat-option>
+                                    <mat-option value="2">
+                                        In Progress
+                                    </mat-option>
+                                    <mat-option value="1">
+                                        Done
+                                    </mat-option>
+                                    <mat-option value="3">
+                                        Cancel
+                                    </mat-option>
+
+
+                                </mat-select>
+                            </mat-form-field>
+
+
+                        </form>
+
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsOrder"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsOrder;"></tr>
+            </table>
+            <mat-paginator [length]="order.total"
+                           [pageSize]="pagerOrder"
+                           [pageIndex]="pageOrder"
+                           [pageSizeOptions]="[10, 25, 100]"
+                           [showFirstLastButtons]="true"
+                           (page)="changePage($event,'order')">
+            </mat-paginator>
+        </div>
+
+    </div>
+</div>
+<div class="table-title">
+    All Transactions
+</div>
+
+    <div class="table-container">
+
+        <table class="tables" mat-table #table [dataSource]="transaction.items" matSort (matSortChange)="sortData($event,'transaction')">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle('transaction') : null"
+                                  [checked]="selectionTransaction.hasValue() && isAllSelected('transaction')"
+                                  [indeterminate]="selectionTransaction.hasValue() && !isAllSelected('transaction')">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selectionTransaction.toggle(row) : null"
+                                  [checked]="selectionTransaction.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="user">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+                <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ref_type">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference Type</th>
+                <td mat-cell *matCellDef="let element"> {{element.ref_type}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ref_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.ref_id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let element"> {{element.amount |number :'1.2-2'}} </td>
+            </ng-container>
+
+            <!-- Position Column -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsTransaction"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsTransaction;"></tr>
+        </table>
+        <mat-paginator [length]="transaction.total"
+                       [pageSize]="pagerTransaction"
+                       [pageIndex]="pageTransaction"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event,'transaction')">
+        </mat-paginator>
+    </div>

@@ -1,0 +1,69 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    Product
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Source" readonly [value]="product.source?.name">
+
+            </mat-form-field>
+
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Category" readonly [value]="product.category?.name">
+
+            </mat-form-field>
+
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Service" readonly [value]="product.service?.name">
+
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Gender" readonly [value]="product.gender">
+
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Gender_tax(%)" readonly [value]="product.gender_percent">
+
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Quantity" readonly [value]="product.quantity">
+
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Price($)" readonly [value]="product.price">
+
+            </mat-form-field>
+            <mat-form-field>
+                <textarea matInput placeholder="Description" readonly rows="4" [value]="product.description"></textarea>
+
+            </mat-form-field>
+
+        </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="dialogRef.close()">Close</button>
+    </div>
+</mat-dialog-actions>

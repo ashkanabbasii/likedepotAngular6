@@ -1,0 +1,49 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="ticket-page" *ngIf="ticket">
+    <div class="ticket-info">
+        <h1>{{ticket.subject}}</h1>
+        <p>{{ticket.message}}</p>
+
+
+        <mat-form-field>
+            <mat-select placeholder="Status" [(ngModel)]="ticket.status" (selectionChange)="ticketStatus(ticket,$event)">
+                <mat-option [value]="0" >Pending</mat-option>
+                <mat-option [value]="1" >Close</mat-option>
+                <mat-option [value]="2" >Answered</mat-option>
+
+            </mat-select>
+
+        </mat-form-field>
+
+
+    </div>
+
+
+
+    <div class="ticket-replies">
+        <div class="reply" *ngFor="let r of ticket.replies">
+            <div class="reply-head">
+                <span class="user">{{r.user.name}}</span>
+                <span class="date">{{r.created_at}}</span>
+            </div>
+            <div class="reply-content" [innerHtml]="r.reply"></div>
+        </div>
+    </div>
+    <div class="ticket-info col-6" *ngIf="!ticket.status || ticket.status==2">
+        <h1>Reply to tickets</h1>
+
+
+        <form class="form-items" [formGroup]="replyForm" (submit)="submit()">
+            <div class="form-item">
+                <mat-form-field>
+                    <textarea rows="5" matInput placeholder="Replay" formControlName="reply"></textarea>
+                    <mat-error *ngIf="replyForm.controls.reply.invalid">Please enter replay</mat-error>
+                </mat-form-field>
+            </div>
+
+            <button class="ml-2" mat-raised-button color="primary" [disabled]="inLoad">Submit</button>
+
+        </form>
+    </div>
+
+</div>

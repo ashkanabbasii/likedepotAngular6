@@ -1,0 +1,127 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="">
+    <div class="page-head">
+        <span class="page-title">Orders</span>
+    </div>
+    <div class="user-search">
+        <mat-form-field class="example-full-width">
+            <input matInput placeholder="Search" [(ngModel)]="search" (keypress)="reload()">
+        </mat-form-field>
+    </div>
+
+    <div class="table-container">
+        <table class="tables" mat-table #table [dataSource]="orders.items" matSort (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="product_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+                <td mat-cell *matCellDef="let element">
+                    <button  color="primary"  class="table-button small-material-button" mat-raised-button (click)="showProduct(element)">
+                        Show
+                    </button>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="user_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ref_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference_number</th>
+                <td mat-cell *matCellDef="let element"> {{element.ref_id == '1' ? 'Payed From The Wallet' : element.ref_id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="gender">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.gender}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let element">
+                         {{element.price |number :'1.2-2'}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element" [ngSwitch]="element.status">
+                    <span *ngSwitchCase="0">Pending</span>
+                    <span *ngSwitchCase="1">Done</span>
+                    <span *ngSwitchCase="2">In Progress</span>
+                    <span *ngSwitchCase="3">Canceled</span>
+
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="link">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Link</th>
+                <td mat-cell *matCellDef="let element"> {{element.link}} </td>
+            </ng-container>
+
+
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                    <form>
+
+                        <mat-form-field>
+                            <mat-select placeholder="Status" [(ngModel)]="element.status" name="status" (selectionChange)="ChangeStatus(element)">
+                                <mat-option value="0">
+                                    Pending
+                                </mat-option>
+                                <mat-option value="2">
+                                    In Progress
+                                </mat-option>
+                                <mat-option value="1">
+                                    Done
+                                </mat-option>
+                                <mat-option value="3">
+                                    Cancel!
+                                </mat-option>
+
+
+
+                            </mat-select>
+                        </mat-form-field>
+
+
+                    </form>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="orders.total"
+                       [pageSize]="pager"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+
+</div>

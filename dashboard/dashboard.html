@@ -1,0 +1,38 @@
+
+
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer [mode]="'over'">
+        <div class="main-menu">
+            <div class="main-menu-holder">
+                <main-navbar [user]="user" (redirected)="drawer.toggle()"></main-navbar>
+            </div>
+
+        </div>
+    </mat-drawer>
+    <mat-drawer-content style="min-height: 100vh">
+
+        <div class="main-container">
+            <mat-toolbar color="primary">
+                <button  mat-icon-button (click)="drawer.toggle()">
+                    <mat-icon>view_headline</mat-icon>
+                </button>
+                {{navTitle}}
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="user-menu">
+                    <mat-icon>account_circle</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu" float-right>
+                    <button mat-menu-item routerLink="/dashboard/admininfo">
+                        <mat-icon>settings</mat-icon>
+                        <span>User Account</span>
+                    </button>
+                    <button mat-menu-item (click)="logOut()">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </mat-toolbar>
+            <router-outlet></router-outlet>
+
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

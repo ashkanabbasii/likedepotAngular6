@@ -1,0 +1,43 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    {{ type }} Blog Post
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+    <form class="form-items" [formGroup]="blogForm" (submit)="submit()">
+
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Status" formControlName="status" [(ngModel)]="data.item.status">
+                    <mat-option value="unpublished" >UnPublished</mat-option>
+                    <mat-option value="published" >Published</mat-option>
+                </mat-select>
+                <mat-error *ngIf="blogForm.controls.status.invalid">Please Enter Status</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Title" formControlName="title" [value]="data.item.title">
+                <mat-error *ngIf="blogForm.controls.title.invalid">Please enter Title</mat-error>
+            </mat-form-field>
+
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <textarea [value]="data.item.blog_body" matInput placeholder="Description" formControlName="blog_body" rows="4"></textarea>
+                <mat-error *ngIf="blogForm.controls.blog_body.invalid">Please enter Body</mat-error>
+            </mat-form-field>
+
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="submit()">Submit</button>
+    </div>
+</mat-dialog-actions>

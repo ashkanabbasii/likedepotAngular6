@@ -1,0 +1,90 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="">
+    <div class="page-head">
+        <span class="page-title">Tickets</span>
+    </div>
+    <div class="table-container">
+        <table class="tables" mat-table #table [dataSource]="tickets.items" matSort (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="user_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>User</th>
+                <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="subject">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>subject</th>
+                <td mat-cell *matCellDef="let element"> {{element.subject.substr(0 , 50) }} {{ element.message.length > 50 ? '...' : '' }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let element" [ngSwitch]="element.status">
+                    <span *ngSwitchCase="0">Pending</span>
+                    <span *ngSwitchCase="1">Closed</span>
+                    <span *ngSwitchCase="2">Answered</span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="important">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Important</th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-icon [color]="element.important ? 'warn' : ''">flag</mat-icon>
+                </td>
+            </ng-container>
+
+
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <td mat-cell *matCellDef="let element">
+                    <a  color="primary"  class="table-button small-material-button" mat-raised-button [routerLink]="['/dashboard/tickets', element.id ]">
+                        Show
+                    </a>
+
+                    <a  color="primary"  class="table-button small-material-button" mat-raised-button *ngIf="!element.status" (click)="closeTicket(element)">
+                        Close
+                    </a>
+
+
+                    <button color="warn" class="table-button small-material-button" mat-raised-button  (click)="deleteItem(element.id)">
+                        Delete
+                    </button>
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="tickets.total"
+                       [pageSize]="pager"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+
+</div>

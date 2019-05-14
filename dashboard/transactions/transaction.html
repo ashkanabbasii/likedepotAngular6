@@ -1,0 +1,76 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<div class="">
+    <div class="page-head">
+        <span class="page-title">Users</span>
+    </div>
+
+
+        <div class="user-search">
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Search" [(ngModel)]="search" (keypress)="reload()">
+            </mat-form-field>
+        </div>
+
+
+    <div class="table-container">
+        <table class="tables" mat-table #table [dataSource]="transaction.items" matSort (matSortChange)="sortData($event)">
+
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="user">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+                <td mat-cell *matCellDef="let element"> {{element.user.name}} </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+                <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ref_type">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference Type</th>
+                <td mat-cell *matCellDef="let element"> {{element.ref_type}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ref_id">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Reference ID</th>
+                <td mat-cell *matCellDef="let element"> {{element.ref_id}} </td>
+            </ng-container>
+            <ng-container matColumnDef="amount">
+                <th class="has-min-width" mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let element"> {{element.amount |number :'1.2-2'}} </td>
+            </ng-container>
+
+            <!-- Position Column -->
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-paginator [length]="transaction.total"
+                       [pageSize]="pager"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[10, 25, 100]"
+                       [showFirstLastButtons]="true"
+                       (page)="changePage($event)">
+        </mat-paginator>
+    </div>
+
+</div>

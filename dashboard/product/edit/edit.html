@@ -1,0 +1,76 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    {{ type }} Products
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+    <form class="form-items" [formGroup]="productForm" (submit)="submit()">
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Source" formControlName="source_id">
+                    <mat-option [value]="s.value.id" *ngFor="let s of submitedItems.sources | keys">{{s.value.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="productForm.controls.source_id.invalid">Please Select Source</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Category" formControlName="cat_id">
+                    <mat-option [value]="s.value.id" *ngFor="let s of submitedItems.categories | keys">{{s.value.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="productForm.controls.cat_id.invalid">Please Select Category</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Service" formControlName="service_id">
+                    <mat-option [value]="s.value.id" *ngFor="let s of submitedItems.services | keys">{{s.value.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="productForm.controls.service_id.invalid">Please Enter Service</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Gender" formControlName="gender" [value]="submitedItems.gender">
+                    <mat-option value="none">DeActive</mat-option>
+                    <mat-option value="active">Active</mat-option>
+                </mat-select>
+                <mat-error *ngIf="productForm.controls.gender.invalid">Please Enter Gender</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Gender_Tax" formControlName="gender_percent">
+                <mat-error *ngIf="productForm.controls.gender_percent.invalid">Please enter Gender Tax</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Quantity" formControlName="quantity">
+                <mat-error *ngIf="productForm.controls.quantity.invalid">Please enter quantity number</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Price" formControlName="price">
+                <mat-error *ngIf="productForm.controls.price.invalid">Please enter price in $</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <textarea matInput placeholder="Description" formControlName="description" rows="4"></textarea>
+                <mat-error *ngIf="productForm.controls.description.invalid">Please enter description</mat-error>
+            </mat-form-field>
+
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="submit()">Submit</button>
+    </div>
+</mat-dialog-actions>

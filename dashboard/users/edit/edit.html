@@ -1,0 +1,68 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    {{ type }} User
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+    <form class="form-items" [formGroup]="userForm" (submit)="submit()">
+        <div class="form-item">
+            <div class="form-item">
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Name" formControlName="name">
+                    <mat-error *ngIf="userForm.controls.name.invalid">Please enter Name of user</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="text" matInput placeholder="UserName" formControlName="username">
+                <mat-error *ngIf="userForm.controls.username.invalid">Please enter UserName</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="email" matInput placeholder="Email" formControlName="email">
+                <mat-error *ngIf="userForm.controls.email.invalid">Please enter Email</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Wallet" formControlName="wallet">
+                <mat-error *ngIf="userForm.controls.wallet.invalid">Please enter Wallet</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Status" formControlName="status">
+                    <mat-option [value]="0" >Deactive/Block</mat-option>
+                    <mat-option [value]="1" >Active</mat-option>
+                </mat-select>
+                <mat-error *ngIf="userForm.controls.status.invalid">Please Select Status</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Type" formControlName="type">
+                    <mat-option value="Admin" >Admin</mat-option>
+                    <mat-option value="Supervisor" >Supervisor</mat-option>
+                    <mat-option value="Manager" >Manager</mat-option>
+                    <mat-option value="Support" >Support</mat-option>
+                    <mat-option value="User" >User</mat-option>
+                </mat-select>
+                <mat-error *ngIf="userForm.controls.status.invalid">Please Select Status</mat-error>
+            </mat-form-field>
+        </div>
+
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="submit()">Submit</button>
+    </div>
+</mat-dialog-actions>

@@ -1,0 +1,44 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    {{ type }} Discount
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+    <form class="form-items" [formGroup]="discountForm" (submit)="submit()">
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Source" formControlName="source_id">
+                    <mat-option [value]="s.value.id" *ngFor="let s of submitedItems | keys">{{s.value.name}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="discountForm.controls.source_id.invalid">Please Select Source</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div class="form-item">
+            <mat-form-field>
+                <mat-select placeholder="Status" formControlName="status" [(ngModel)]="data.item.status">
+                    <mat-option value="0">Deactive</mat-option>
+                    <mat-option value="1">Active</mat-option>
+                </mat-select>
+                <mat-error *ngIf="discountForm.controls.status.invalid">Please Select Status</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div class="form-item">
+            <mat-form-field>
+                <input type="number" matInput placeholder="Discount(% Percent)" formControlName="discount">
+                <mat-error *ngIf="discountForm.controls.discount.invalid">Please enter discount in %</mat-error>
+            </mat-form-field>
+
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="submit()">Submit</button>
+    </div>
+</mat-dialog-actions>

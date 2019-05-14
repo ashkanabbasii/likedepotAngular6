@@ -1,0 +1,27 @@
+<mat-progress-bar mode="indeterminate" *ngIf="inLoad"></mat-progress-bar>
+<h2 mat-dialog-title>
+    {{ type }} Social Media
+    <button class="close-button" type="button" mat-icon-button [disabled]="inLoad" (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+<mat-dialog-content>
+    <div class="image-uploader">
+        <label class="w-100" for="fileInput">
+            <img class="w-100" [src]="img">
+        </label>
+        <input type="file" id="fileInput" #fileInput placeholder="Upload file..." (change)="upload()"/>
+    </div>
+    <form [formGroup]="sourceForm" (submit)="submit()">
+        <mat-form-field>
+            <input matInput placeholder="Source name" formControlName="name">
+            <mat-error *ngIf="sourceForm.controls.name.invalid">Please enter Social Media name</mat-error>
+        </mat-form-field>
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class=" w-100 text-left">
+        <button class="ml-2" mat-button color="primary" [disabled]="inLoad" (click)="submit()">Submit</button>
+    </div>
+</mat-dialog-actions>
